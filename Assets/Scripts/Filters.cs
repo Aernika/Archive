@@ -1,28 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.TextCore;
-using UnityEngine.UI;
+using System.Net.Mime;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+using static System.Net.Mime.MediaTypeNames;
+using Image = UnityEngine.UI.Image;
 
 public class Filters : MonoBehaviour
 {
-    public TMP_Dropdown drop_fund;
-    public TMP_Dropdown drop_fund_comp;
-    public TMP_InputField input_year0;
-    public TMP_InputField input_year1;
-    public TMP_InputField input_search;
-    public GameObject text;
-    string print_text;
-    public void Search()
-    {
-        print_text = "";
-        print_text += "\nЗапрос: " + input_search.text;
-        print_text += "\nФонд: " + drop_fund.value;
-        print_text += "\nСостав: " + drop_fund_comp.value;
-        print_text += "\nМатериалы: " + this.GetComponent<Buttons>().material;
-        print_text += "\nОт: " + input_year0.text + " До: " + input_year1.text;
+    public Sprite blackBtn;
+    public Sprite blueBtn;
+    public bool status; //false = black, true = blue
 
-        text.GetComponent<Text>().text = print_text;
+    void Start()
+    {
+        status = false;
+    }
+    
+    public void BtnClickFilter()
+    {
+        status = !status;
+        if (status)
+        {
+            this.GetComponent<Image>().sprite = blueBtn;
+            this.GetComponent<Image>().pixelsPerUnitMultiplier = 10f; 
+            this.GetComponentInChildren<TMP_Text>().color = Color.white;
+        }
+        else
+        {
+            this.GetComponent<Image>().sprite = blackBtn;
+            this.GetComponent<Image>().pixelsPerUnitMultiplier = 4.09f;
+            this.GetComponentInChildren<TMP_Text>().color = Color.black;
+        }
     }
 }
