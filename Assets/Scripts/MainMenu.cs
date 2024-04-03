@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Unity.VisualScripting;
+using System.IO;
+using System.Net.Mime;
 
 public class MainMenu : MonoBehaviour
 {
@@ -15,22 +17,28 @@ public class MainMenu : MonoBehaviour
     public GameObject btnLayout1;
     public GameObject btnLayout2;
     public GameObject CardContentObject;
+    public GameObject MediaPlayer;
+    public GameObject Photos;
+    public GameObject Facts;
+    public GameObject btnbck;
+    public GameObject titleT;
+    public GameObject btnAbout;
+    public GameObject archive;
 
+    public int numCategory;
     public int level;
     private int levelOld;
     public string title;
     public TMP_Text Title;
     public TMP_Text Description;
-    public List<String> textButtons;
-    private List<List<String>> cardContent;
-    
-    
+
+
     #region Приватные методы
     void Start()
     {
         level = levelOld = 1;
         ChangeCategory(level);
-        cardContent = new List<List<String>>();
+        numCategory = -1;
     }
     
     void Update()
@@ -75,7 +83,28 @@ public class MainMenu : MonoBehaviour
             Description.gameObject.SetActive(false);
             btnLayout1.SetActive(false);
             btnLayout2.SetActive(false);
+            MediaPlayer.SetActive(false);
+            Photos.SetActive(false);
+            Facts.SetActive(false);
+            btnbck.transform.GetChild(0).gameObject.SetActive(false);
+            btnbck.transform.GetChild(1).gameObject.SetActive(true);
+            btnbck.transform.GetChild(2).gameObject.SetActive(false);
+            btnbck.transform.GetChild(3).gameObject.SetActive(true);
+            btnbck.transform.GetChild(4).gameObject.GetComponent<TMP_Text>().color = Color.black;
+            titleT.SetActive(true);
+            if (!btnAbout.GetComponent<AboutButtons>().status) btnAbout.GetComponent<AboutButtons>().BtnAboutClick();
             levelOld = 3;
+        }
+        else if (lv == 4)
+        {
+            PanelTop.SetActive(true);
+            ScrollView.SetActive(false);
+            Object.SetActive(false);
+            Title.gameObject.SetActive(false);
+            Description.gameObject.SetActive(false);
+            btnLayout1.SetActive(false);
+            btnLayout2.SetActive(false);
+            levelOld = 4;
         }
     }
     #endregion
@@ -83,161 +112,52 @@ public class MainMenu : MonoBehaviour
     #region Кнопки Категорий
     public void BtnCategory1()
     {
-        Title.text = title = "Музыка";
-        Description.text =  "Отношение писателя к классической музыке, песенному творчеству, как к «музыкальному " +
-                            "началу» придает каждому из его произведений особое звучание. Редкое произведение не " +
-                            "содержит песенных цитат, а сама музыка в понимании автора раскрывается как символ " +
-                            "красоты и добра. В письмах он признается в своей любви к классической музыке.";
-        textButtons.Clear();
-        textButtons.AddRange(new string[] {"Балет", "Спектакль", "Опера", "Романсы", 
-                                                    "В творчестве В.П. Астафьева", "Аудиоспектакли и аудиокниги"});
-        cardContent.Clear();
-        cardContent.Add(new List<string> {"Аудиоспектакль","0","«Сон о белых горах» по повести «Царь рыба»", 
-                            "Поставлен в Московском Малом театре имени А.Н. Островского (автор инсценировки, он же " +
-                            "постановщик - В. Седов.)"});
-        cardContent.Add(new List<string> {"Аудиоспектакль","0","«Сон о белых горах» по повести «Царь рыба»", 
-            "Поставлен в Московском Малом театре имени А.Н. Островского (автор инсценировки, он же " +
-            "постановщик - В. Седов.)"});
-        cardContent.Add(new List<string> {"Аудиоспектакль","0","«Сон о белых горах» по повести «Царь рыба»", 
-            "Поставлен в Московском Малом театре имени А.Н. Островского (автор инсценировки, он же " +
-            "постановщик - В. Седов.)"});
-        CardContentObject.GetComponent<Cards>().StartCreate(cardContent);
+        Title.text = title = archive.GetComponent<ArсhiveContent>().categories[0].title;
+        Description.text =  archive.GetComponent<ArсhiveContent>().categories[0].description;
+        CardContentObject.GetComponent<Cards>().StartCreate(0);
         ScrollView.GetComponent<ScrollRect>().normalizedPosition = Vector2.one;
-        btnLayout1.GetComponent<ButtonFilters>().StartCreate(textButtons);
+        btnLayout1.GetComponent<ButtonFilters>().StartCreate(archive.GetComponent<ArсhiveContent>().categories[0].filters);
+        numCategory = 0;
         level = 2;
     }
     public void BtnCategory2()
     {
-        Title.text = title = "Театр";
-        Description.text =  "Театр Астафьева – это театр, возвышающий повседневность до ритуала, воспроизводящий " +
-                            "человека в преодолении судьбы. Только герой здесь не возвышается над родом, а " +
-                            "возвращает ему общие не отменимые ценности.";
-        textButtons.Clear();
-        textButtons.AddRange(new string[] {"Балет", "Опера", "Аудиоспектакли и аудиокниги"});
-        cardContent.Clear();
-        cardContent.Add(new List<string> {"Аудиоспектакль","1","«Сон о белых горах» по повести «Царь рыба»", 
-                                                "Поставлен в Московском Малом театре имени А.Н. Островского " +
-                                                "(автор инсценировки, он же постановщик - В. Седов.)"});
-        cardContent.Add(new List<string> {"Балет","0","«Царь рыба»", "Поставлен в Красноярском театре оперы и " + 
-                                                            "балета (композитор Владимир Пороцкий) в 1999 году."});
-        cardContent.Add(new List<string> {"Спектакль","0","«По повести «Звездопад»", "Был поставлен спектакль в " +
-                                                "Красноярском ТЮЗе, 2000 год."});
-        cardContent.Add(new List<string> {"Опера","2","по роману В.П. Астафьева «Прокляты и убиты»", 
-                                                "Поставлен на сцене МХАТа им. А.П. Чехова в 2010 году."});
-        cardContent.Add(new List<string> {"Спектакль","1","Спектакль «Прости меня» в Вологодском ТЮЗе", 
-                                                "Впервые спектакль по пьесе «Прости меня», написанной В. П. Астафьевым " +
-                                                "по повести «Звездопад», был поставлен в 1979 году."});
-        cardContent.Add(new List<string> {"Аудиоспектакль","1","«Сон о белых горах» по повести «Царь рыба»", 
-            "Поставлен в Московском Малом театре имени А.Н. Островского " +
-            "(автор инсценировки, он же постановщик - В. Седов.)"});
-        cardContent.Add(new List<string> {"Балет","0","«Царь рыба»", "Поставлен в Красноярском театре оперы и " + 
-                                                                     "балета (композитор Владимир Пороцкий) в 1999 году."});
-        cardContent.Add(new List<string> {"Спектакль","0","«По повести «Звездопад»", "Был поставлен спектакль в " +
-            "Красноярском ТЮЗе, 2000 год."});
-        cardContent.Add(new List<string> {"Опера","2","по роману В.П. Астафьева «Прокляты и убиты»", 
-            "Поставлен на сцене МХАТа им. А.П. Чехова в 2010 году."});
-        CardContentObject.GetComponent<Cards>().StartCreate(cardContent);
+        Title.text = title = archive.GetComponent<ArсhiveContent>().categories[1].title;
+        Description.text =  archive.GetComponent<ArсhiveContent>().categories[1].description;
+        CardContentObject.GetComponent<Cards>().StartCreate(1);
         ScrollView.GetComponent<ScrollRect>().normalizedPosition = Vector2.one;
-        btnLayout1.GetComponent<ButtonFilters>().StartCreate(textButtons);
+        btnLayout1.GetComponent<ButtonFilters>().StartCreate(archive.GetComponent<ArсhiveContent>().categories[1].filters);
+        numCategory = 1;
         level = 2;
     }
     public void BtnCategory3()
     {
-        Title.text = title = "Кино";
-        Description.text =  "Глубина произведений В.П.Астафьева такова, что не всегда можно постичь ее и воплотить " +
-                            "силами киноискусства. Творчество писателя актуально, но по замечаниям многих режиссёров " +
-                            "– «очень трудно экранизировать, потому что трудно раскрыть душу, фактически вывернуть " +
-                            "её наизнанку, как это делает автор».";
-        textButtons.Clear();
-        textButtons.AddRange(new string[] {"По произведениям В.П. Астафьева", "Документальные", 
-            "Фильмы, упоминаемые В.П. Аставьевым в его произведениях"});
-        cardContent.Clear();
-        cardContent.Add(new List<string> {"По произведениям В.П. Астафьева","1","«Сон о белых горах» по повести «Царь рыба»", 
-                                                "Поставлен в Московском Малом театре имени А.Н. Островского " +
-                                                "(автор инсценировки, он же постановщик - В. Седов.)"});
-        cardContent.Add(new List<string> {"Документальные","0","«Царь рыба»", "Поставлен в Красноярском театре оперы и " + 
-                                                            "балета (композитор Владимир Пороцкий) в 1999 году."});
-        cardContent.Add(new List<string> {"Документальные","0","«По повести «Звездопад»", "Был поставлен спектакль в " +
-                                                "Красноярском ТЮЗе, 2000 год."});
-        cardContent.Add(new List<string> {"Упоминаемые в его произведениях","2","по роману В.П. Астафьева «Прокляты и убиты»", 
-                                                "Поставлен на сцене МХАТа им. А.П. Чехова в 2010 году."});
-        cardContent.Add(new List<string> {"По произведениям В.П. Астафьева","1","Спектакль «Прости меня» в Вологодском ТЮЗе", 
-                                                "Впервые спектакль по пьесе «Прости меня», написанной В. П. Астафьевым " +
-                                                "по повести «Звездопад», был поставлен в 1979 году."});
-        cardContent.Add(new List<string> {"Упоминаемые в его произведениях","1","«Сон о белых горах» по повести «Царь рыба»", 
-            "Поставлен в Московском Малом театре имени А.Н. Островского " +
-            "(автор инсценировки, он же постановщик - В. Седов.)"});
-        cardContent.Add(new List<string> {"Документальные","0","«Царь рыба»", "Поставлен в Красноярском театре оперы и " + 
-                                                                     "балета (композитор Владимир Пороцкий) в 1999 году."});
-        cardContent.Add(new List<string> {"По произведениям В.П. Астафьева","0","«По повести «Звездопад»", "Был поставлен спектакль в " +
-            "Красноярском ТЮЗе, 2000 год."});
-        CardContentObject.GetComponent<Cards>().StartCreate(cardContent);
+        Title.text = title = archive.GetComponent<ArсhiveContent>().categories[2].title;
+        Description.text =  archive.GetComponent<ArсhiveContent>().categories[2].description;
+        CardContentObject.GetComponent<Cards>().StartCreate(2);
         ScrollView.GetComponent<ScrollRect>().normalizedPosition = Vector2.one;
-        btnLayout1.GetComponent<ButtonFilters>().StartCreate(textButtons);
+        btnLayout1.GetComponent<ButtonFilters>().StartCreate(archive.GetComponent<ArсhiveContent>().categories[2].filters);
+        numCategory = 2;
         level = 2;
     }
     public void BtnCategory4()
     {
-        Title.text = title = "Литература";
-        Description.text =  "В.П. Астафьев всегда был широко открытым миру писателем. О заграничной жизни Астафьев " +
-                            "знал не понаслышке. Он много путешествовал, в составе делегаций советских писателей. " +
-                            "Часть материалов, имеющих отношение к зарубежным командировкам писателя, сохранилась " +
-                            "в фондах КККМ.";
-        textButtons.Clear();
-        textButtons.AddRange(new string[] {"Личная библиотека В.П. Астафьева", "О жизни и творчестве", 
-            "Зарубежная проза", "Прокляты и убиты", "Веселый солдат"});
-        cardContent.Clear();
-        cardContent.Add(new List<string> {"Личная библиотека В.П. Астафьева","1","«Сон о белых горах» по повести «Царь рыба»", 
-                                                "Поставлен в Московском Малом театре имени А.Н. Островского " +
-                                                "(автор инсценировки, он же постановщик - В. Седов.)"});
-        cardContent.Add(new List<string> {"О жизни и творчестве","0","«Царь рыба»", "Поставлен в Красноярском театре оперы и " + 
-                                                            "балета (композитор Владимир Пороцкий) в 1999 году."});
-        cardContent.Add(new List<string> {"О жизни и творчестве","0","«По повести «Звездопад»", "Был поставлен спектакль в " +
-                                                "Красноярском ТЮЗе, 2000 год."});
-        cardContent.Add(new List<string> {"Личная библиотека В.П. Астафьева","2","по роману В.П. Астафьева «Прокляты и убиты»", 
-                                                "Поставлен на сцене МХАТа им. А.П. Чехова в 2010 году."});
-        cardContent.Add(new List<string> {"Веселый солдат","1","Спектакль «Прости меня» в Вологодском ТЮЗе", 
-                                                "Впервые спектакль по пьесе «Прости меня», написанной В. П. Астафьевым " +
-                                                "по повести «Звездопад», был поставлен в 1979 году."});
-        cardContent.Add(new List<string> {"Прокляты и убиты","1","«Сон о белых горах» по повести «Царь рыба»", 
-            "Поставлен в Московском Малом театре имени А.Н. Островского " +
-            "(автор инсценировки, он же постановщик - В. Седов.)"});
-        cardContent.Add(new List<string> {"Веселый солдат","0","«Царь рыба»", "Поставлен в Красноярском театре оперы и " + 
-                                                                     "балета (композитор Владимир Пороцкий) в 1999 году."});
-        cardContent.Add(new List<string> {"Зарубежная проза","0","«По повести «Звездопад»", "Был поставлен спектакль в " +
-            "Красноярском ТЮЗе, 2000 год."});
-        CardContentObject.GetComponent<Cards>().StartCreate(cardContent);
+        Title.text = title = archive.GetComponent<ArсhiveContent>().categories[3].title;
+        Description.text =  archive.GetComponent<ArсhiveContent>().categories[3].description;
+        CardContentObject.GetComponent<Cards>().StartCreate(3);
         ScrollView.GetComponent<ScrollRect>().normalizedPosition = Vector2.one;
-        btnLayout1.GetComponent<ButtonFilters>().StartCreate(textButtons);
+        btnLayout1.GetComponent<ButtonFilters>().StartCreate(archive.GetComponent<ArсhiveContent>().categories[3].filters);
+        numCategory = 3;
         level = 2;
     }
     public void BtnCategory5()
     {
-        Title.text = title = "Путешествия";
-        Description.text =  "В.П. Астафьев всегда был широко открытым миру писателем. О заграничной жизни Астафьев " +
-                            "знал не понаслышке. Он много путешествовал, в составе делегаций советских писателей. " +
-                            "Часть материалов, имеющих отношение к зарубежным командировкам писателя, сохранилась " +
-                            "в фондах КККМ.";
-        textButtons.Clear();
-        textButtons.AddRange(new string[] {"Россия", "Болгария", "Польша", "Югославия", "Франция", "Бельгия", 
-            "Греция", "США", "Колумбия", "Германия", "Турция", "Китай", "Япония", "Польша", "Италия", "Бельгия", 
-            "Шотландия", "Венгрия", "Голландия"});
-                cardContent.Clear();
-        cardContent.Add(new List<string> {"Россия","0","«Сон о белых горах» по повести «Царь рыба»", 
-                                                "Поставлен в Московском Малом театре имени А.Н. Островского " +
-                                                "(автор инсценировки, он же постановщик - В. Седов.)"});
-        cardContent.Add(new List<string> {"Болгария","0","«Царь рыба»", "Поставлен в Красноярском театре оперы и " + 
-                                                            "балета (композитор Владимир Пороцкий) в 1999 году."});
-        cardContent.Add(new List<string> {"Польша","0","«По повести «Звездопад»", "Был поставлен спектакль в " +
-                                                "Красноярском ТЮЗе, 2000 год."});
-        cardContent.Add(new List<string> {"Россия","0","по роману В.П. Астафьева «Прокляты и убиты»", 
-                                                "Поставлен на сцене МХАТа им. А.П. Чехова в 2010 году."});
-        cardContent.Add(new List<string> {"Бельгия","0","Спектакль «Прости меня» в Вологодском ТЮЗе", 
-                                                "Впервые спектакль по пьесе «Прости меня», написанной В. П. Астафьевым " +
-                                                "по повести «Звездопад», был поставлен в 1979 году."});
-        CardContentObject.GetComponent<Cards>().StartCreate(cardContent);
+        Title.text = title = archive.GetComponent<ArсhiveContent>().categories[4].title;
+        Description.text =  archive.GetComponent<ArсhiveContent>().categories[4].description;
+        CardContentObject.GetComponent<Cards>().StartCreate(4);
         ScrollView.GetComponent<ScrollRect>().normalizedPosition = Vector2.one;
-        btnLayout1.GetComponent<ButtonFilters>().StartCreate(textButtons);
+        btnLayout1.GetComponent<ButtonFilters>().StartCreate(archive.GetComponent<ArсhiveContent>().categories[4].filters);
+        numCategory = 4;
         level = 2;
     }
     #endregion
@@ -251,6 +171,41 @@ public class MainMenu : MonoBehaviour
     public void CLickContent()
     {
         level = 3;
+    }
+    public void CLickVideo()
+    {
+        level = 4;
+        MediaPlayer.SetActive(true);
+        btnbck.transform.GetChild(0).gameObject.SetActive(true);
+        btnbck.transform.GetChild(1).gameObject.SetActive(false);
+        btnbck.transform.GetChild(2).gameObject.SetActive(true);
+        btnbck.transform.GetChild(3).gameObject.SetActive(false);
+        btnbck.transform.GetChild(4).gameObject.GetComponent<TMP_Text>().color = Color.white;
+        //titleT.SetActive(false);
+    }
+    public void CLickFacts()
+    {
+        this.GetComponent<Facts>().factsList = new List<string> {"Текст первого факта", "Текст второго факта", 
+            "Текст третьего факта", "Текст четвертого факта", "Текст пятого факта"};
+        this.GetComponent<Facts>().CreateFacts();
+        level = 4;
+        Facts.SetActive(true);
+    }
+    public void CLickPhotos()
+    {
+        level = 4;
+        Photos.SetActive(true);
+    }
+    public void CLickOnePhoto()
+    {
+        level = 5;
+        //MediaPlayer.SetActive(true);
+        btnbck.transform.GetChild(0).gameObject.SetActive(true);
+        btnbck.transform.GetChild(1).gameObject.SetActive(false);
+        btnbck.transform.GetChild(2).gameObject.SetActive(true);
+        btnbck.transform.GetChild(3).gameObject.SetActive(false);
+        btnbck.transform.GetChild(4).gameObject.GetComponent<TMP_Text>().color = Color.white;
+        titleT.SetActive(false);
     }
     #endregion
 }

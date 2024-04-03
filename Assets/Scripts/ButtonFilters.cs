@@ -10,7 +10,10 @@ public class ButtonFilters : MonoBehaviour
     public GameObject btnPrefab;
     public GameObject btnLayout2;
     public GameObject scrollView;
+    public GameObject controller;
+    public GameObject cardCreator;
     public bool status; //true = 1, false = 2
+    public List<string> filtersTitles;
     
     public void StartCreate(List<String> btnT)
     {
@@ -28,7 +31,7 @@ public class ButtonFilters : MonoBehaviour
         }
         CreateFilterBtn(btnT);
     }
-    void DeleteAllChildren(GameObject parent)
+    public static void DeleteAllChildren(GameObject parent)
     {
         int childCount = parent.transform.childCount;
         for (int i = childCount - 1; i >= 0; i--)
@@ -52,6 +55,9 @@ public class ButtonFilters : MonoBehaviour
                 buttonTextComponent.text = btnTexts[i];
                 newButton.GetComponent<RectTransform>().sizeDelta = 
                     new Vector2(buttonTextComponent.GetPreferredValues().x, 50f);
+                newButton.GetComponent<Filters>().filterController = this.gameObject;
+                newButton.GetComponent<Filters>().cardCreator = cardCreator;
+                newButton.GetComponent<Filters>().controller = controller;
             }
             else
             {

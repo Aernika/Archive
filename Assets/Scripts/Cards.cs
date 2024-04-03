@@ -9,54 +9,76 @@ public class Cards : MonoBehaviour
 {
     public GameObject cardPrefab;
     public GameObject controller;
-    public Sprite sprite1;
-    public Sprite sprite2;
-    
-    public void StartCreate(List<List<String>> cardsT)
+    public GameObject archive;
+    public GameObject content;
+    public GameObject contentGallery;
+
+    public void StartCreate(int indexCategory, List<string> filters=null)
     {
-        DeleteAllChildren(this.gameObject);
-        CreateContentCard(cardsT);
+        ButtonFilters.DeleteAllChildren(gameObject);
+        CreateContentCard(archive.GetComponent<ArсhiveContent>().categories[indexCategory].cardsobj, indexCategory, filters);
     }
-    void DeleteAllChildren(GameObject parent)
+    void CreateContentCard(List<ArсhiveContent.Card> cards, int index, List<string> filters=null)
     {
-        int childCount = parent.transform.childCount;
-        for (int i = childCount - 1; i >= 0; i--)
+        if (filters is null) filters = new List<string>();
+        foreach (ArсhiveContent.Card card in cards)
         {
-            Transform child = parent.transform.GetChild(i);
-            Destroy(child.gameObject);
-        }
-    }
-    void CreateContentCard(List<List<String>> cardsT)
-    {
-        for (int i = 0; i < cardsT.Count; i++)
-        {
-            GameObject newCard = Instantiate(cardPrefab, this.gameObject.transform);
-            Button btn = newCard.GetComponent<Button>();
-            btn.onClick.AddListener(controller.GetComponent<MainMenu>().CLickContent);
+            if (filters.Count > 0)
+            {
+                foreach (string str in filters)
+                {
+                    if (str == card.tag)
+                    {
+                        GameObject newCard = Instantiate(cardPrefab, gameObject.transform);
+                        Button btn = newCard.GetComponent<Button>();
+                        btn.onClick.AddListener(newCard.GetComponent<ClickCard>().ClickOnCard);
+
+                        newCard.transform.GetChild(0).gameObject.GetComponentInChildren<TMP_Text>().text = card.tag;
+                        newCard.transform.GetChild(0).gameObject.GetComponent<RectTransform>().sizeDelta =
+                            new Vector2(
+                                newCard.transform.GetChild(0).gameObject.GetComponentInChildren<TMP_Text>().GetPreferredValues().x,
+                                35f);
+                        newCard.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.SetActive(true);
+                        if (card.idposter != 0) newCard.transform.GetChild(1).gameObject.GetComponentInChildren<Image>().sprite = 
+                            archive.GetComponent<ArсhiveContent>().GetImage(card.idposter);
+                        else newCard.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.SetActive(false);
+                        newCard.transform.GetChild(1).gameObject.GetComponentInChildren<TMP_Text>().text = card.title; 
+                        newCard.transform.GetChild(2).gameObject.GetComponent<TMP_Text>().text = card.shortdescription;
             
-            newCard.transform.GetChild(0).gameObject.GetComponentInChildren<TMP_Text>().text = cardsT[i][0];
-            newCard.transform.GetChild(0).gameObject.GetComponent<RectTransform>().sizeDelta =
-                new Vector2(
-                    newCard.transform.GetChild(0).gameObject.GetComponentInChildren<TMP_Text>().GetPreferredValues().x,
-                    35f);
-        
-            if (cardsT[i][1] == "0")
-            {
-                newCard.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.SetActive(false);
+                        newCard.GetComponent<ClickCard>().indexCategory = index;
+                        newCard.GetComponent<ClickCard>().thisCard = card;
+                        newCard.GetComponent<ClickCard>().archive = archive;
+                        newCard.GetComponent<ClickCard>().controller = controller;
+                        newCard.GetComponent<ClickCard>().content = content;
+                        newCard.GetComponent<ClickCard>().contentGallery = contentGallery;
+                    }
+                }
             }
-            else if (cardsT[i][1] == "1")
+            else 
             {
-                newCard.transform.GetChild(1).gameObject.GetComponentInChildren<Image>().sprite = sprite1; 
-                newCard.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.SetActive(true);
-            }
-            else if (cardsT[i][1] == "2")
-            {
-                newCard.transform.GetChild(1).gameObject.GetComponentInChildren<Image>().sprite = sprite2; 
-                newCard.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.SetActive(true);
-            }
+                GameObject newCard = Instantiate(cardPrefab, gameObject.transform);
+                Button btn = newCard.GetComponent<Button>();
+                btn.onClick.AddListener(newCard.GetComponent<ClickCard>().ClickOnCard);
             
-            newCard.transform.GetChild(1).gameObject.GetComponentInChildren<TMP_Text>().text = cardsT[i][2]; 
-            newCard.transform.GetChild(2).gameObject.GetComponent<TMP_Text>().text = cardsT[i][3];
+                newCard.transform.GetChild(0).gameObject.GetComponentInChildren<TMP_Text>().text = card.tag;
+                newCard.transform.GetChild(0).gameObject.GetComponent<RectTransform>().sizeDelta =
+                    new Vector2(
+                        newCard.transform.GetChild(0).gameObject.GetComponentInChildren<TMP_Text>().GetPreferredValues().x,
+                        35f);
+                newCard.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.SetActive(true);
+                if (card.idposter != 0) newCard.transform.GetChild(1).gameObject.GetComponentInChildren<Image>().sprite = 
+                    archive.GetComponent<ArсhiveContent>().GetImage(card.idposter);
+                else newCard.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.SetActive(false);
+                newCard.transform.GetChild(1).gameObject.GetComponentInChildren<TMP_Text>().text = card.title; 
+                newCard.transform.GetChild(2).gameObject.GetComponent<TMP_Text>().text = card.shortdescription;
+            
+                newCard.GetComponent<ClickCard>().indexCategory = index;
+                newCard.GetComponent<ClickCard>().thisCard = card;
+                newCard.GetComponent<ClickCard>().archive = archive;
+                newCard.GetComponent<ClickCard>().controller = controller;
+                newCard.GetComponent<ClickCard>().content = content;
+                newCard.GetComponent<ClickCard>().contentGallery = contentGallery;
+            }
         }
     }
 }
