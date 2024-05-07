@@ -17,7 +17,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &3263022664806250970
 RectTransform:
@@ -168,7 +168,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &5955690881661510341
 RectTransform:
@@ -325,3 +325,6 @@ MonoBehaviour:
   blackBtn: {fileID: 21300000, guid: ff849a815ab96b4468b6580efff301df, type: 3}
   blueBtn: {fileID: 21300000, guid: d674a904f33c41f4e95160311011d58f, type: 3}
   status: 0
+  filterController: {fileID: 0}
+  cardController: {fileID: 0}
+  controller: {fileID: 0}

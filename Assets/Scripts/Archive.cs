@@ -16,16 +16,16 @@ public class Archive : MonoBehaviour
 {
     //public const string adminApi = "http://192.168.0.184:8888/api/harmony/";
 
-    public const string adminApi = "http://192.168.0.240:8888/api/harmony/";
-    //public const string adminApi = "http://62.109.23.170:8888/api/harmony/";
+    //public const string adminApi = "http://192.168.0.240:8888/api/harmony/";
+    public const string adminApi = "http://62.109.23.170:8888/api/harmony/";
     //public const string adminApi = "http://95.188.79.124:8888/api/harmony/";
     public List<string> categoriesType = new List<string>() { "MUSIC", "THEATRE", "CINEMA", "LITERATURE", "JOURNEY" };
-    public List<string> mediaType = new List<string>() { "FACT", "PHOTO_VIDEO", "MOVIE", "SOUND", "COVER" }; //только для запроса conntent/{id content}/media
+    public List<string> mediaType = new List<string>() { "FACT", "PHOTO_VIDEO", "MOVIE", "SOUND", "COVER" }; //С‚РѕР»СЊРєРѕ РґР»СЏ Р·Р°РїСЂРѕСЃР° conntent/{id content}/media
     public List<CategoriesList> cats;
     public RootObject objectContent;
     public Dictionary<string, string> cache =  new Dictionary<string, string>();
-    //public Dictionary<string, Texture2D> coverCache = new Dictionary<string, Texture2D>(); //только обложки в мини размере
-    //public Dictionary<string, Texture2D> imageCache = new Dictionary<string, Texture2D>(); // все остальное
+    //public Dictionary<string, Texture2D> coverCache = new Dictionary<string, Texture2D>(); //С‚РѕР»СЊРєРѕ РѕР±Р»РѕР¶РєРё РІ РјРёРЅРё СЂР°Р·РјРµСЂРµ
+    //public Dictionary<string, Texture2D> imageCache = new Dictionary<string, Texture2D>(); // РІСЃРµ РѕСЃС‚Р°Р»СЊРЅРѕРµ
     //private List<Texture2D> textures = new();
     public CacheInspector cacheInspector = new CacheInspector();
     private int countCache = 0;
@@ -107,6 +107,10 @@ public class Archive : MonoBehaviour
         {
             Directory.CreateDirectory(videoFolder);
         }
+        ClearFolder(folderPath);
+        ClearFolder(folderResizePath);
+        ClearFolder(audioFolder);
+        ClearFolder(videoFolder);        
     }
     private void Update()
     {
@@ -115,7 +119,7 @@ public class Archive : MonoBehaviour
         //if (countImage != imageCache.Count) { cacheInspector.imageCache.FromDictionary(imageCache); countImage = imageCache.Count; }
     }
 
-    #region Создание классов
+    #region РЎРѕР·РґР°РЅРёРµ РєР»Р°СЃСЃРѕРІ
     [Serializable]
     public class Tag
     {
@@ -153,18 +157,18 @@ public class Archive : MonoBehaviour
     [Serializable]
     public class Content
     {
-        public string id;               //для запроса {type category}/list
-        public string title;            //для запроса {type category}/list
-        public string description;      //для запроса {type category}/list   
-        public string aboutInfo;        //для запроса conntent/{id content}
+        public string id;               //РґР»СЏ Р·Р°РїСЂРѕСЃР° {type category}/list
+        public string title;            //РґР»СЏ Р·Р°РїСЂРѕСЃР° {type category}/list
+        public string description;      //РґР»СЏ Р·Р°РїСЂРѕСЃР° {type category}/list   
+        public string aboutInfo;        //РґР»СЏ Р·Р°РїСЂРѕСЃР° conntent/{id content}
         public InformationAbout information;        
-        public string text;             //для запроса conntent/{id content}
-        public string categoryType;     //для запроса conntent/{id content}
-        public Tag tag;                 //для запроса {type category}/list
-        public Media cover;             //для запроса {type category}/list
-        public List<Media> media;       //для запроса conntent/{id content}/media
+        public string text;             //РґР»СЏ Р·Р°РїСЂРѕСЃР° conntent/{id content}
+        public string categoryType;     //РґР»СЏ Р·Р°РїСЂРѕСЃР° conntent/{id content}
+        public Tag tag;                 //РґР»СЏ Р·Р°РїСЂРѕСЃР° {type category}/list
+        public Media cover;             //РґР»СЏ Р·Р°РїСЂРѕСЃР° {type category}/list
+        public List<Media> media;       //РґР»СЏ Р·Р°РїСЂРѕСЃР° conntent/{id content}/media
 
-        /*не нашла опять
+        /*РЅРµ РЅР°С€Р»Р° РѕРїСЏС‚СЊ
         public List<Media> facts;
         public Media movie;
         public Media sound; */
@@ -194,20 +198,20 @@ public class Archive : MonoBehaviour
     [Serializable]
     public class InformationAbout
     {
-        public string Artist { get; set; } //Художник
-        public string ArtisticDirector { get; set; } //Художественный руководитель
-        public string Choreographer { get; set; } //Хореограф
-        public string Composer { get; set; } //Композитор
-        public string Conductor { get; set; } //Дирижёр
-        public string Director { get; set; } //Режиссер
-        public string Operator { get; set; } //оператор
-        public string ProductionYear { get; set; } //Год постановки
-        public string Screenwriter { get; set; } //Сценарист
-        public string Studio { get; set; } //Студия
-        public string Theatre { get; set; } //Театр
-        public string LogError;//Театр
+        public string Artist { get; set; } //РҐСѓРґРѕР¶РЅРёРє
+        public string ArtisticDirector { get; set; } //РҐСѓРґРѕР¶РµСЃС‚РІРµРЅРЅС‹Р№ СЂСѓРєРѕРІРѕРґРёС‚РµР»СЊ
+        public string Choreographer { get; set; } //РҐРѕСЂРµРѕРіСЂР°С„
+        public string Composer { get; set; } //РљРѕРјРїРѕР·РёС‚РѕСЂ
+        public string Conductor { get; set; } //Р”РёСЂРёР¶С‘СЂ
+        public string Director { get; set; } //Р РµР¶РёСЃСЃРµСЂ
+        public string Operator { get; set; } //РѕРїРµСЂР°С‚РѕСЂ
+        public string ProductionYear { get; set; } //Р“РѕРґ РїРѕСЃС‚Р°РЅРѕРІРєРё
+        public string Screenwriter { get; set; } //РЎС†РµРЅР°СЂРёСЃС‚
+        public string Studio { get; set; } //РЎС‚СѓРґРёСЏ
+        public string Theatre { get; set; } //РўРµР°С‚СЂ
+        public string LogError;//РўРµР°С‚СЂ
         public GameObject aboutInfoPrefab;
-        public string Roles { get; set; } //В ролях
+        public string Roles { get; set; } //Р’ СЂРѕР»СЏС…
 
         private static readonly string[] propertyOrder = new string[]
         {
@@ -218,9 +222,9 @@ public class Archive : MonoBehaviour
 
         private static readonly string[] namesProperty = new string[]
         {
-            "Художник", "Художественный руководитель", "Хореограф", "Композитор", "Дирижёр",
-            "Режиссер", "Оператор", "Год постановки",  "Сценарист",
-            "Студия", "Театр", "В ролях"
+            "РҐСѓРґРѕР¶РЅРёРє", "РҐСѓРґРѕР¶РµСЃС‚РІРµРЅРЅС‹Р№ СЂСѓРєРѕРІРѕРґРёС‚РµР»СЊ", "РҐРѕСЂРµРѕРіСЂР°С„", "РљРѕРјРїРѕР·РёС‚РѕСЂ", "Р”РёСЂРёР¶С‘СЂ",
+            "Р РµР¶РёСЃСЃРµСЂ", "РћРїРµСЂР°С‚РѕСЂ", "Р“РѕРґ РїРѕСЃС‚Р°РЅРѕРІРєРё",  "РЎС†РµРЅР°СЂРёСЃС‚",
+            "РЎС‚СѓРґРёСЏ", "РўРµР°С‚СЂ", "Р’ СЂРѕР»СЏС…"
         };
 
         public void CreateInfoLine(int index, Transform parentLine)
@@ -233,7 +237,7 @@ public class Archive : MonoBehaviour
             if (propertyInfo != null)
             {
                 
-                GameObject lineInstance = Instantiate(aboutInfoPrefab, parentLine); //линия в about
+                GameObject lineInstance = Instantiate(aboutInfoPrefab, parentLine); //Р»РёРЅРёСЏ РІ about
                 string propertyValue = (string)propertyInfo.GetValue(this, null);
 
                 TMP_Text nameText = lineInstance.transform.GetChild(0).gameObject.transform.GetChild(0).GetComponent<TMP_Text>();
@@ -242,7 +246,7 @@ public class Archive : MonoBehaviour
                 nameText.text = namesProperty[index];
                 valueText.text = propertyValue;
 
-                // Перестраиваем макет
+                // РџРµСЂРµСЃС‚СЂР°РёРІР°РµРј РјР°РєРµС‚
                 ContentSizeFitter nameFitter = nameText.GetComponent<ContentSizeFitter>();
                 ContentSizeFitter valueFitter = valueText.GetComponent<ContentSizeFitter>();
 
@@ -254,32 +258,32 @@ public class Archive : MonoBehaviour
 
 
 
-                //Обновляем размер родительского RectTransform
+                //РћР±РЅРѕРІР»СЏРµРј СЂР°Р·РјРµСЂ СЂРѕРґРёС‚РµР»СЊСЃРєРѕРіРѕ RectTransform
                  LayoutRebuilder.ForceRebuildLayoutImmediate(nameText.rectTransform);
                 LayoutRebuilder.ForceRebuildLayoutImmediate(valueText.rectTransform);
 
-                //Пересчитываем размер контейнера
+                //РџРµСЂРµСЃС‡РёС‚С‹РІР°РµРј СЂР°Р·РјРµСЂ РєРѕРЅС‚РµР№РЅРµСЂР°
                  LayoutRebuilder.ForceRebuildLayoutImmediate(lineInstance.GetComponent<RectTransform>());
 
-                //Обновляем размеры родительского контейнера
+                //РћР±РЅРѕРІР»СЏРµРј СЂР°Р·РјРµСЂС‹ СЂРѕРґРёС‚РµР»СЊСЃРєРѕРіРѕ РєРѕРЅС‚РµР№РЅРµСЂР°
                  RectTransform parentRectTransform = parentLine.GetComponent<RectTransform>();
                 LayoutRebuilder.ForceRebuildLayoutImmediate(parentRectTransform);
 
                 RectTransform textParentRect = nameText.transform.parent.GetComponent<RectTransform>();
                 LayoutRebuilder.ForceRebuildLayoutImmediate(textParentRect);
 
-               //Если есть еще один уровень родительских объектов(например, вложенные панели)
+               //Р•СЃР»Рё РµСЃС‚СЊ РµС‰Рµ РѕРґРёРЅ СѓСЂРѕРІРµРЅСЊ СЂРѕРґРёС‚РµР»СЊСЃРєРёС… РѕР±СЉРµРєС‚РѕРІ(РЅР°РїСЂРёРјРµСЂ, РІР»РѕР¶РµРЅРЅС‹Рµ РїР°РЅРµР»Рё)
                  RectTransform parentOfTextParentRect = textParentRect.parent.GetComponent<RectTransform>();
                 if (parentOfTextParentRect != null)
                 {
                     LayoutRebuilder.ForceRebuildLayoutImmediate(parentOfTextParentRect);
                 }
 
-                //Наконец, обновляем размер родительского объекта всех линий(parentLine)
+                //РќР°РєРѕРЅРµС†, РѕР±РЅРѕРІР»СЏРµРј СЂР°Р·РјРµСЂ СЂРѕРґРёС‚РµР»СЊСЃРєРѕРіРѕ РѕР±СЉРµРєС‚Р° РІСЃРµС… Р»РёРЅРёР№(parentLine)
                  RectTransform parentLineRect = parentLine.GetComponent<RectTransform>();
                 LayoutRebuilder.ForceRebuildLayoutImmediate(parentLineRect);
 
-               // В зависимости от компоновки может потребоваться дополнительно обновить ContentSizeFitter на parentLine
+               // Р’ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ РєРѕРјРїРѕРЅРѕРІРєРё РјРѕР¶РµС‚ РїРѕС‚СЂРµР±РѕРІР°С‚СЊСЃСЏ РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅРѕ РѕР±РЅРѕРІРёС‚СЊ ContentSizeFitter РЅР° parentLine
                ContentSizeFitter parentLineFitter = parentLine.GetComponent<ContentSizeFitter>();
                 if (parentLineFitter != null)
                 {
@@ -311,7 +315,7 @@ public class Archive : MonoBehaviour
                 //Debug.LogWarning("about " + parentLine.gameObject.GetComponent<RectTransform>().sizeDelta.y);
             }
         }
-        public bool GetAllValidInfo(Transform parentLine) // true - есть что-то false - нет ничего
+        public bool GetAllValidInfo(Transform parentLine) // true - РµСЃС‚СЊ С‡С‚Рѕ-С‚Рѕ false - РЅРµС‚ РЅРёС‡РµРіРѕ
         {
             ButtonFilters.DeleteAllChildren(parentLine.gameObject);
             if (!string.IsNullOrEmpty(LogError))
@@ -343,8 +347,8 @@ public class Archive : MonoBehaviour
     }
     #endregion
 
-    #region Корутины
-    public IEnumerator CategoryRequest()//Запросы category/tags и category/{type}/info
+    #region РљРѕСЂСѓС‚РёРЅС‹
+    public IEnumerator CategoryRequest()//Р—Р°РїСЂРѕСЃС‹ category/tags Рё category/{type}/info
     {
         int h = 0;
         foreach (string type in categoriesType)
@@ -400,7 +404,7 @@ public class Archive : MonoBehaviour
         }
     }
 
-    public IEnumerator FetchContent() // Запрос category/{type}/list
+    public IEnumerator FetchContent() // Р—Р°РїСЂРѕСЃ category/{type}/list
     {
         foreach (string type in categoriesType)
         {
@@ -441,7 +445,7 @@ public class Archive : MonoBehaviour
                                     if (File.Exists(savePath))
                                     {
                                         Debug.Log("File already exists: " + savePath);
-                                        yield break; // Прекратить выполнение если файл уже существует
+                                        yield break; // РџСЂРµРєСЂР°С‚РёС‚СЊ РІС‹РїРѕР»РЅРµРЅРёРµ РµСЃР»Рё С„Р°Р№Р» СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚
                                     }
                                     File.WriteAllBytes(savePath, imageBytes);
                                     Debug.Log("Image saved to " + savePath);
@@ -470,7 +474,7 @@ public class Archive : MonoBehaviour
         //textures.Clear();
     }
    
-    public IEnumerator CardsRequest(string categoryType, Action<List<string>> callback) //Запрос category/{type}/list
+    public IEnumerator CardsRequest(string categoryType, Action<List<string>> callback) //Р—Р°РїСЂРѕСЃ category/{type}/list
     {
         string url = adminApi + "category/" + categoryType + "/list";
         if (cache.ContainsKey(url))
@@ -498,22 +502,22 @@ public class Archive : MonoBehaviour
 
                 //}
             }
-            // Все обложки обработаны, вызываем callback
+            // Р’СЃРµ РѕР±Р»РѕР¶РєРё РѕР±СЂР°Р±РѕС‚Р°РЅС‹, РІС‹Р·С‹РІР°РµРј callback
             //textures.Clear();
             callback(null);
             
         }
         else
         {
-            // Если данных в кеше нет, вызываем callback с пустым списком или null
+            // Р•СЃР»Рё РґР°РЅРЅС‹С… РІ РєРµС€Рµ РЅРµС‚, РІС‹Р·С‹РІР°РµРј callback СЃ РїСѓСЃС‚С‹Рј СЃРїРёСЃРєРѕРј РёР»Рё null
             //textures.Clear();
             callback(null);
         }
     }
-    public IEnumerator ContentRequest(string contentId) //Запрос content/{id} и content/{id}/media
+    public IEnumerator ContentRequest(string contentId) //Р—Р°РїСЂРѕСЃ content/{id} Рё content/{id}/media
     {
-        //Debug.LogWarning("Запустился ContentRequest");
-        // Запрос для получения основной информации о контенте
+        //Debug.LogWarning("Р—Р°РїСѓСЃС‚РёР»СЃСЏ ContentRequest");
+        // Р—Р°РїСЂРѕСЃ РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ РѕСЃРЅРѕРІРЅРѕР№ РёРЅС„РѕСЂРјР°С†РёРё Рѕ РєРѕРЅС‚РµРЅС‚Рµ
         string contentUrl = adminApi + "content/" + contentId;
         yield return FetchData(contentUrl, (data) =>
         {
@@ -521,7 +525,7 @@ public class Archive : MonoBehaviour
             UpdateContent(contentId, data);
         });
 
-        // Запрос для получения медиа, связанного с контентом
+        // Р—Р°РїСЂРѕСЃ РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ РјРµРґРёР°, СЃРІСЏР·Р°РЅРЅРѕРіРѕ СЃ РєРѕРЅС‚РµРЅС‚РѕРј
         string mediaUrl = adminApi + "content/" + contentId + "/media";
         yield return FetchData(mediaUrl, (data) =>
         {
@@ -574,21 +578,21 @@ public class Archive : MonoBehaviour
                     }
                     else
                     {
-                        // Не удалось десериализовать информацию, возможно, данные некорректны
-                        targetContent.information.LogError = "Не удалось десериализовать информацию";
+                        // РќРµ СѓРґР°Р»РѕСЃСЊ РґРµСЃРµСЂРёР°Р»РёР·РѕРІР°С‚СЊ РёРЅС„РѕСЂРјР°С†РёСЋ, РІРѕР·РјРѕР¶РЅРѕ, РґР°РЅРЅС‹Рµ РЅРµРєРѕСЂСЂРµРєС‚РЅС‹
+                        targetContent.information.LogError = "РќРµ СѓРґР°Р»РѕСЃСЊ РґРµСЃРµСЂРёР°Р»РёР·РѕРІР°С‚СЊ РёРЅС„РѕСЂРјР°С†РёСЋ";
                     }
                 }
                 catch (JsonSerializationException jex)
                 {
-                    // Логирование ошибки сериализации
+                    // Р›РѕРіРёСЂРѕРІР°РЅРёРµ РѕС€РёР±РєРё СЃРµСЂРёР°Р»РёР·Р°С†РёРё
                     //Debug.LogError("Serialization Error: " + jex.Message);
-                    targetContent.information.LogError = "<b><i>Ошибки сериализации</i></b>";//+ jex.Message;
+                    targetContent.information.LogError = "<b><i>РћС€РёР±РєРё СЃРµСЂРёР°Р»РёР·Р°С†РёРё</i></b>";//+ jex.Message;
                 }
                 catch (Exception ex)
                 {
-                    // Логирование других ошибок
+                    // Р›РѕРіРёСЂРѕРІР°РЅРёРµ РґСЂСѓРіРёС… РѕС€РёР±РѕРє
                     //Debug.LogError("General Error: " + ex.Message);
-                    targetContent.information.LogError = "<b><i>Неправильный формат данных</i></b>";//+ ex.Message;
+                    targetContent.information.LogError = "<b><i>РќРµРїСЂР°РІРёР»СЊРЅС‹Р№ С„РѕСЂРјР°С‚ РґР°РЅРЅС‹С…</i></b>";//+ ex.Message;
                 }
                 if (content.text is not null) targetContent.text = ConvertHTMLToTMP(content.text);
                 targetContent.categoryType = content.categoryType;
@@ -629,10 +633,10 @@ public class Archive : MonoBehaviour
     {
         if (string.IsNullOrEmpty(input))
         {
-            return input;  // Возвращает исходную строку, если она пуста или null
+            return input;  // Р’РѕР·РІСЂР°С‰Р°РµС‚ РёСЃС…РѕРґРЅСѓСЋ СЃС‚СЂРѕРєСѓ, РµСЃР»Рё РѕРЅР° РїСѓСЃС‚Р° РёР»Рё null
         }
 
-        // Замена всех вхождений "media" на "resize"
+        // Р—Р°РјРµРЅР° РІСЃРµС… РІС…РѕР¶РґРµРЅРёР№ "media" РЅР° "resize"
         string output = input.Replace("media", "resize");
         return output;
     }
@@ -642,7 +646,7 @@ public class Archive : MonoBehaviour
         {
             if (media.id != null && media.url != null && (media.type == "COVER" || media.type == "PHOTO_VIDEO" || media.type == "FACT"))
             {
-                // Определяем размер файла через заголовок Content-Length (этот запрос можно оптимизировать, если сервер поддерживает HEAD запросы)
+                // РћРїСЂРµРґРµР»СЏРµРј СЂР°Р·РјРµСЂ С„Р°Р№Р»Р° С‡РµСЂРµР· Р·Р°РіРѕР»РѕРІРѕРє Content-Length (СЌС‚РѕС‚ Р·Р°РїСЂРѕСЃ РјРѕР¶РЅРѕ РѕРїС‚РёРјРёР·РёСЂРѕРІР°С‚СЊ, РµСЃР»Рё СЃРµСЂРІРµСЂ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ HEAD Р·Р°РїСЂРѕСЃС‹)
                 //string newUrl = ReplaceMediaWithResize(media.url);
                 string newUrl = media.url;
                 UnityWebRequest sizeRequest = UnityWebRequest.Head(newUrl);
@@ -655,10 +659,10 @@ public class Archive : MonoBehaviour
 
 
                 long contentLength = long.Parse(sizeRequest.GetResponseHeader("Content-Length"));
-                Debug.LogWarning("Размер: " + contentLength + " url: " + newUrl);
+                Debug.LogWarning("Р Р°Р·РјРµСЂ: " + contentLength + " url: " + newUrl);
                 long remainingLength = contentLength;
                 long start = 0;
-                const int chunkSize = 2048 * 2048; // Размер загружаемого фрагмента, например 1 МБ
+                const int chunkSize = 2048 * 2048; // Р Р°Р·РјРµСЂ Р·Р°РіСЂСѓР¶Р°РµРјРѕРіРѕ С„СЂР°РіРјРµРЅС‚Р°, РЅР°РїСЂРёРјРµСЂ 1 РњР‘
 
                 List<byte> imageData = new List<byte>();
 
@@ -688,7 +692,7 @@ public class Archive : MonoBehaviour
                     }
                 }
 
-                // Сохраняем полное изображение после полной загрузки
+                // РЎРѕС…СЂР°РЅСЏРµРј РїРѕР»РЅРѕРµ РёР·РѕР±СЂР°Р¶РµРЅРёРµ РїРѕСЃР»Рµ РїРѕР»РЅРѕР№ Р·Р°РіСЂСѓР·РєРё
                 if (remainingLength == 0)
                 {
                     string savePath = Path.Combine(folderPath, media.id + ".png");
@@ -696,12 +700,12 @@ public class Archive : MonoBehaviour
                     if (File.Exists(savePath))
                     {
                         Debug.Log("File already exists: " + savePath);
-                        yield break; // Прекратить выполнение если файл уже существует
+                        yield break; // РџСЂРµРєСЂР°С‚РёС‚СЊ РІС‹РїРѕР»РЅРµРЅРёРµ РµСЃР»Рё С„Р°Р№Р» СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚
                     }
                     File.WriteAllBytes(savePath, imageData.ToArray());
                     Debug.Log("Complete image saved to " + savePath);
 
-                    // Если изображение нужно использовать в Unity, его можно загрузить из файла или прямо из массива байтов
+                    // Р•СЃР»Рё РёР·РѕР±СЂР°Р¶РµРЅРёРµ РЅСѓР¶РЅРѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РІ Unity, РµРіРѕ РјРѕР¶РЅРѕ Р·Р°РіСЂСѓР·РёС‚СЊ РёР· С„Р°Р№Р»Р° РёР»Рё РїСЂСЏРјРѕ РёР· РјР°СЃСЃРёРІР° Р±Р°Р№С‚РѕРІ
                     Texture2D texture = new Texture2D(2, 2);
                     texture.LoadImage(imageData.ToArray());
                     //textures.Add(texture);
@@ -717,12 +721,12 @@ public class Archive : MonoBehaviour
 
                 if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
                 {
-                    Debug.LogError("Ошибка загрузки аудио: " + request.error);
+                    Debug.LogError("РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё Р°СѓРґРёРѕ: " + request.error);
                 }
                 else
                 {
                     File.WriteAllBytes(localPath, request.downloadHandler.data);
-                    Debug.Log("Аудио сохранено: " + localPath);
+                    Debug.Log("РђСѓРґРёРѕ СЃРѕС…СЂР°РЅРµРЅРѕ: " + localPath);
                 }
             }
             //if (media.id != null && media.url != null && media.type == "MOVIE")
@@ -734,12 +738,12 @@ public class Archive : MonoBehaviour
 
             //    if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
             //    {
-            //        Debug.LogError("Ошибка загрузки аудио: " + request.error);
+            //        Debug.LogError("РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё Р°СѓРґРёРѕ: " + request.error);
             //    }
             //    else
             //    {
             //        File.WriteAllBytes(localPath, request.downloadHandler.data);
-            //        Debug.Log("Видео сохранено: " + localPath);
+            //        Debug.Log("Р’РёРґРµРѕ СЃРѕС…СЂР°РЅРµРЅРѕ: " + localPath);
             //    }
             //}
         }
@@ -748,35 +752,35 @@ public class Archive : MonoBehaviour
 
     public static string ConvertHTMLToTMP(string htmlText)
     {
-        // Замена перевода строки <br> и <br/>
+        // Р—Р°РјРµРЅР° РїРµСЂРµРІРѕРґР° СЃС‚СЂРѕРєРё <br> Рё <br/>
         htmlText = Regex.Replace(htmlText, "<br>", "\n");
         htmlText = Regex.Replace(htmlText, "<br/>", "\n");
 
-        // Замена <strong> аналогично <b>
+        // Р—Р°РјРµРЅР° <strong> Р°РЅР°Р»РѕРіРёС‡РЅРѕ <b>
         htmlText = Regex.Replace(htmlText, "<strong>", "<b>");
         htmlText = Regex.Replace(htmlText, "</strong>", "</b>");
 
-        // Замена <em> аналогично <i>
+        // Р—Р°РјРµРЅР° <em> Р°РЅР°Р»РѕРіРёС‡РЅРѕ <i>
         htmlText = Regex.Replace(htmlText, "<em>", "<i>");
         htmlText = Regex.Replace(htmlText, "</em>", "</i>");
 
-        // Условная замена для <p>
+        // РЈСЃР»РѕРІРЅР°СЏ Р·Р°РјРµРЅР° РґР»СЏ <p>
         htmlText = Regex.Replace(htmlText, "<p></p>", "");
         htmlText = Regex.Replace(htmlText, @"^\s*<p>\s*", "", RegexOptions.Multiline);
         htmlText = Regex.Replace(htmlText, @"\s*<p>\s*", "\n");
 
-        // Условная замена для </p>
+        // РЈСЃР»РѕРІРЅР°СЏ Р·Р°РјРµРЅР° РґР»СЏ </p>
         htmlText = Regex.Replace(htmlText, @"\s*</p>\s*$", "", RegexOptions.Multiline);
         htmlText = Regex.Replace(htmlText, @"\s*</p>\s*", "\n");
 
-        // Замена &nbsp; на пространство
+        // Р—Р°РјРµРЅР° &nbsp; РЅР° РїСЂРѕСЃС‚СЂР°РЅСЃС‚РІРѕ
         htmlText = Regex.Replace(htmlText, "&nbsp;", " ");
 
         return htmlText;
     }
 
     //______________________________________________________________________________________________________________
-    public IEnumerator CardsRequest(string categoryType) //старый запрос
+    public IEnumerator CardsRequest(string categoryType) //СЃС‚Р°СЂС‹Р№ Р·Р°РїСЂРѕСЃ
     {
         Debug.Log("Start request");
         string url = adminApi + "category/" + categoryType + "/list";
@@ -841,33 +845,33 @@ public class Archive : MonoBehaviour
                 }
             }
             //Debug.Log("objectContent" + objectContent.contents.Count);
-            yield break; // Прерываем выполнение, если данные уже есть в кэше
+            yield break; // РџСЂРµСЂС‹РІР°РµРј РІС‹РїРѕР»РЅРµРЅРёРµ, РµСЃР»Рё РґР°РЅРЅС‹Рµ СѓР¶Рµ РµСЃС‚СЊ РІ РєСЌС€Рµ
         }
-        //Debug.LogWarning("Закончен CardsRequest");
+        //Debug.LogWarning("Р—Р°РєРѕРЅС‡РµРЅ CardsRequest");
         //textures.Clear();
     }
     public static bool IsFileLargerThan1_8MB(string filePath)
     {
-        // Проверяем, существует ли файл
+        // РџСЂРѕРІРµСЂСЏРµРј, СЃСѓС‰РµСЃС‚РІСѓРµС‚ Р»Рё С„Р°Р№Р»
         if (!File.Exists(filePath))
         {
-            Console.WriteLine("Файл не найден: " + filePath);
+            Console.WriteLine("Р¤Р°Р№Р» РЅРµ РЅР°Р№РґРµРЅ: " + filePath);
             return false;
         }
 
-        // Создаём объект FileInfo
+        // РЎРѕР·РґР°С‘Рј РѕР±СЉРµРєС‚ FileInfo
         FileInfo fileInfo = new FileInfo(filePath);
 
-        // Получаем размер файла в байтах
+        // РџРѕР»СѓС‡Р°РµРј СЂР°Р·РјРµСЂ С„Р°Р№Р»Р° РІ Р±Р°Р№С‚Р°С…
         long sizeInBytes = fileInfo.Length;
 
-        // Переводим 1.8 МБ в байты (1 МБ = 1024 * 1024 байт)
+        // РџРµСЂРµРІРѕРґРёРј 1.8 РњР‘ РІ Р±Р°Р№С‚С‹ (1 РњР‘ = 1024 * 1024 Р±Р°Р№С‚)
         long sizeThreshold = (long)(1.8 * 1024 * 1024);
 
-        // Сравниваем размер файла с пороговым значением
+        // РЎСЂР°РІРЅРёРІР°РµРј СЂР°Р·РјРµСЂ С„Р°Р№Р»Р° СЃ РїРѕСЂРѕРіРѕРІС‹Рј Р·РЅР°С‡РµРЅРёРµРј
         bool isLarger = sizeInBytes > sizeThreshold;
 
-        // Возвращаем результат проверки
+        // Р’РѕР·РІСЂР°С‰Р°РµРј СЂРµР·СѓР»СЊС‚Р°С‚ РїСЂРѕРІРµСЂРєРё
         return isLarger;
     }
 
@@ -880,13 +884,13 @@ public class Archive : MonoBehaviour
 
         if (!string.IsNullOrEmpty(www.error))
         {
-            Debug.LogError("Ошибка загрузки аудио: " + www.error);
+            Debug.LogError("РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё Р°СѓРґРёРѕ: " + www.error);
         }
         else
         {
             audioSource.clip = www.GetAudioClip();
             audioSource.Play();
-            Debug.Log("Аудио загружено и назначено: " + filePath);
+            Debug.Log("РђСѓРґРёРѕ Р·Р°РіСЂСѓР¶РµРЅРѕ Рё РЅР°Р·РЅР°С‡РµРЅРѕ: " + filePath);
             onComplete?.Invoke();
         }
         requestManager.TaskCompleted();
@@ -897,30 +901,30 @@ public class Archive : MonoBehaviour
         string filePath = Path.Combine(Application.persistentDataPath, "video", fileId + "." + format);
         string url = "file://" + filePath;
 
-        // Проверяем, существует ли файл
+        // РџСЂРѕРІРµСЂСЏРµРј, СЃСѓС‰РµСЃС‚РІСѓРµС‚ Р»Рё С„Р°Р№Р»
         if (!System.IO.File.Exists(filePath))
         {
-            Debug.LogError("Файл не найден: " + filePath);
+            Debug.LogError("Р¤Р°Р№Р» РЅРµ РЅР°Р№РґРµРЅ: " + filePath);
             yield break;
         }
 
-        // Настройка VideoPlayer
+        // РќР°СЃС‚СЂРѕР№РєР° VideoPlayer
         videoPlayer.source = VideoSource.Url;
         videoPlayer.url = url;
 
-        // Подписка на событие окончания загрузки видео
+        // РџРѕРґРїРёСЃРєР° РЅР° СЃРѕР±С‹С‚РёРµ РѕРєРѕРЅС‡Р°РЅРёСЏ Р·Р°РіСЂСѓР·РєРё РІРёРґРµРѕ
         videoPlayer.prepareCompleted += OnPrepareCompleted;
         videoPlayer.errorReceived += OnErrorReceived;
 
-        videoPlayer.Prepare(); // Подготовка видео к воспроизведению
+        videoPlayer.Prepare(); // РџРѕРґРіРѕС‚РѕРІРєР° РІРёРґРµРѕ Рє РІРѕСЃРїСЂРѕРёР·РІРµРґРµРЅРёСЋ
 
         void OnPrepareCompleted(VideoPlayer source)
         {
-            videoPlayer.prepareCompleted -= OnPrepareCompleted; // Отписка от события
+            videoPlayer.prepareCompleted -= OnPrepareCompleted; // РћС‚РїРёСЃРєР° РѕС‚ СЃРѕР±С‹С‚РёСЏ
             videoPlayer.errorReceived -= OnErrorReceived;
 
-            videoPlayer.Play(); // Воспроизведение видео
-            Debug.Log("Видео загружено и воспроизводится: " + filePath);
+            videoPlayer.Play(); // Р’РѕСЃРїСЂРѕРёР·РІРµРґРµРЅРёРµ РІРёРґРµРѕ
+            Debug.Log("Р’РёРґРµРѕ Р·Р°РіСЂСѓР¶РµРЅРѕ Рё РІРѕСЃРїСЂРѕРёР·РІРѕРґРёС‚СЃСЏ: " + filePath);
             onComplete?.Invoke();
         }
 
@@ -928,7 +932,7 @@ public class Archive : MonoBehaviour
         {
             videoPlayer.prepareCompleted -= OnPrepareCompleted;
             videoPlayer.errorReceived -= OnErrorReceived;
-            Debug.LogError("Ошибка загрузки видео: " + message);
+            Debug.LogError("РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё РІРёРґРµРѕ: " + message);
         }
     }
 
@@ -937,7 +941,7 @@ public class Archive : MonoBehaviour
     //    string filePath = Path.Combine(audioFolder, fileId + "." + format);
     //    if (!File.Exists(filePath))
     //    {
-    //        Debug.LogError("Файл не найден: " + filePath);
+    //        Debug.LogError("Р¤Р°Р№Р» РЅРµ РЅР°Р№РґРµРЅ: " + filePath);
     //        yield break;
     //    }
     //    AudioType audioType;
@@ -953,7 +957,7 @@ public class Archive : MonoBehaviour
     //            audioType = AudioType.OGGVORBIS;
     //            break;
     //        default:
-    //            Debug.LogError("Неподдерживаемый формат аудио: " + format);
+    //            Debug.LogError("РќРµРїРѕРґРґРµСЂР¶РёРІР°РµРјС‹Р№ С„РѕСЂРјР°С‚ Р°СѓРґРёРѕ: " + format);
     //            yield break;
     //    }
 
@@ -963,28 +967,28 @@ public class Archive : MonoBehaviour
 
     //        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
     //        {
-    //            Debug.LogError(filePath+ " Ошибка загрузки аудио: " + request.error);
+    //            Debug.LogError(filePath+ " РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё Р°СѓРґРёРѕ: " + request.error);
     //        }
     //        else
     //        {
     //            AudioClip clip = DownloadHandlerAudioClip.GetContent(request);
     //            audioSource.clip = clip;
     //            audioSource.Play();
-    //            Debug.Log("Аудио загружено и назначено: " + filePath);
+    //            Debug.Log("РђСѓРґРёРѕ Р·Р°РіСЂСѓР¶РµРЅРѕ Рё РЅР°Р·РЅР°С‡РµРЅРѕ: " + filePath);
     //        }
     //    }
     //}
 
     public string GetSubstringAfterLastDot(string input)
     {
-        // Проверяем, содержит ли строка хотя бы одну точку
+        // РџСЂРѕРІРµСЂСЏРµРј, СЃРѕРґРµСЂР¶РёС‚ Р»Рё СЃС‚СЂРѕРєР° С…РѕС‚СЏ Р±С‹ РѕРґРЅСѓ С‚РѕС‡РєСѓ
         int lastDotIndex = input.LastIndexOf('.');
         if (lastDotIndex == -1)
         {
-            return "";  // Возвращаем пустую строку, если точек нет
+            return "";  // Р’РѕР·РІСЂР°С‰Р°РµРј РїСѓСЃС‚СѓСЋ СЃС‚СЂРѕРєСѓ, РµСЃР»Рё С‚РѕС‡РµРє РЅРµС‚
         }
 
-        // Возвращаем подстроку, начиная с позиции следующей за последней точкой
+        // Р’РѕР·РІСЂР°С‰Р°РµРј РїРѕРґСЃС‚СЂРѕРєСѓ, РЅР°С‡РёРЅР°СЏ СЃ РїРѕР·РёС†РёРё СЃР»РµРґСѓСЋС‰РµР№ Р·Р° РїРѕСЃР»РµРґРЅРµР№ С‚РѕС‡РєРѕР№
         return input.Substring(lastDotIndex + 1);
     }
     public IEnumerator MusicRequest(string url, AudioSource audioSource)
@@ -997,21 +1001,21 @@ public class Archive : MonoBehaviour
             //yield return www.SendWebRequest();
             if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
             {
-                // Обработка ошибок HTTP, включая 404
+                // РћР±СЂР°Р±РѕС‚РєР° РѕС€РёР±РѕРє HTTP, РІРєР»СЋС‡Р°СЏ 404
                 if (request.responseCode == 404)
                 {
                     Debug.LogError("Error 404: Not found.");
                 }
                 else
                 {
-                    Debug.LogError("Ошибка загрузки аудио: " + request.error);
+                    Debug.LogError("РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё Р°СѓРґРёРѕ: " + request.error);
                 }
             }
             else
             {
-                // Получаем загруженный аудиоклип
+                // РџРѕР»СѓС‡Р°РµРј Р·Р°РіСЂСѓР¶РµРЅРЅС‹Р№ Р°СѓРґРёРѕРєР»РёРї
                 AudioClip clip = DownloadHandlerAudioClip.GetContent(request);
-                // Устанавливаем аудиоклип в источник аудио
+                // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј Р°СѓРґРёРѕРєР»РёРї РІ РёСЃС‚РѕС‡РЅРёРє Р°СѓРґРёРѕ
                 audioSource.clip = clip;
                 audioSource.gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.GetComponent<AudioPlayer>().ResetPlayer();
             }
@@ -1019,10 +1023,10 @@ public class Archive : MonoBehaviour
     }
 
     string cloudName = "dnm7a9eo7";
-    string uploadPreset = "p5fekcku";  // Преднастроенный конфиг на Cloudinary для загрузки
+    string uploadPreset = "p5fekcku";  // РџСЂРµРґРЅР°СЃС‚СЂРѕРµРЅРЅС‹Р№ РєРѕРЅС„РёРі РЅР° Cloudinary РґР»СЏ Р·Р°РіСЂСѓР·РєРё
     string apiUrl = "https://api.cloudinary.com/v1_1/{0}/image/upload";
 
-    // Функция для загрузки изображения
+    // Р¤СѓРЅРєС†РёСЏ РґР»СЏ Р·Р°РіСЂСѓР·РєРё РёР·РѕР±СЂР°Р¶РµРЅРёСЏ
     public IEnumerator UploadImage(string filePath, int maxWidth, int maxHeight)
     {
         if (!File.Exists(filePath))
@@ -1030,7 +1034,7 @@ public class Archive : MonoBehaviour
             Debug.LogError("File not found: " + filePath);
             yield break;
         }
-        Debug.LogWarning("Работает новый метод");
+        Debug.LogWarning("Р Р°Р±РѕС‚Р°РµС‚ РЅРѕРІС‹Р№ РјРµС‚РѕРґ");
         byte[] fileData = File.ReadAllBytes(filePath);
         string base64Data = System.Convert.ToBase64String(fileData);
         string url = $"https://api.cloudinary.com/v1_1/{cloudName}/image/upload";
@@ -1058,7 +1062,7 @@ public class Archive : MonoBehaviour
 
     public Texture2D LoadAndResizeTexture(string filePath, int maxWidth, int maxHeight)
     {
-        // Загрузка изображения из файла
+        // Р—Р°РіСЂСѓР·РєР° РёР·РѕР±СЂР°Р¶РµРЅРёСЏ РёР· С„Р°Р№Р»Р°
         if (!File.Exists(filePath))
         {
             Debug.LogError("File not found: " + filePath);
@@ -1067,15 +1071,15 @@ public class Archive : MonoBehaviour
         //StartCoroutine(UploadImage(filePath, maxWidth, maxHeight));
         byte[] fileData = File.ReadAllBytes(filePath);
         Texture2D sourceTexture = new Texture2D(2, 2);
-        sourceTexture.LoadImage(fileData);  // Создает текстуру из загруженных данных
+        sourceTexture.LoadImage(fileData);  // РЎРѕР·РґР°РµС‚ С‚РµРєСЃС‚СѓСЂСѓ РёР· Р·Р°РіСЂСѓР¶РµРЅРЅС‹С… РґР°РЅРЅС‹С…
 
-        // Проверка необходимости изменения размера
+        // РџСЂРѕРІРµСЂРєР° РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚Рё РёР·РјРµРЅРµРЅРёСЏ СЂР°Р·РјРµСЂР°
         if (sourceTexture.width <= maxWidth && sourceTexture.height <= maxHeight)
         {
-            return sourceTexture;  // Возврат, если изменение размера не требуется
+            return sourceTexture;  // Р’РѕР·РІСЂР°С‚, РµСЃР»Рё РёР·РјРµРЅРµРЅРёРµ СЂР°Р·РјРµСЂР° РЅРµ С‚СЂРµР±СѓРµС‚СЃСЏ
         }
 
-        // Создание RenderTexture с новыми размерами
+        // РЎРѕР·РґР°РЅРёРµ RenderTexture СЃ РЅРѕРІС‹РјРё СЂР°Р·РјРµСЂР°РјРё
         float scale = Mathf.Min(maxWidth / (float)sourceTexture.width, maxHeight / (float)sourceTexture.height);
         int targetWidth = Mathf.RoundToInt(sourceTexture.width * scale);
         int targetHeight = Mathf.RoundToInt(sourceTexture.height * scale);
@@ -1083,13 +1087,13 @@ public class Archive : MonoBehaviour
         RenderTexture renderTex = RenderTexture.GetTemporary(targetWidth, targetHeight);
         Graphics.Blit(sourceTexture, renderTex);
 
-        // Создание новой Texture2D и копирование данных из RenderTexture
+        // РЎРѕР·РґР°РЅРёРµ РЅРѕРІРѕР№ Texture2D Рё РєРѕРїРёСЂРѕРІР°РЅРёРµ РґР°РЅРЅС‹С… РёР· RenderTexture
         RenderTexture.active = renderTex;
         Texture2D resizedTexture = new Texture2D(targetWidth, targetHeight);
         resizedTexture.ReadPixels(new Rect(0, 0, targetWidth, targetHeight), 0, 0);
         resizedTexture.Apply();
 
-        // Очистка
+        // РћС‡РёСЃС‚РєР°
         RenderTexture.active = null;
         RenderTexture.ReleaseTemporary(renderTex);
 
@@ -1126,22 +1130,22 @@ public class Archive : MonoBehaviour
     {
         const int maxSize = 2048;
 
-        // Определение наибольшей стороны
+        // РћРїСЂРµРґРµР»РµРЅРёРµ РЅР°РёР±РѕР»СЊС€РµР№ СЃС‚РѕСЂРѕРЅС‹
         float maxDimension = Mathf.Max(originalWidth, originalHeight);
 
-        // Вычисление множителя масштабирования
+        // Р’С‹С‡РёСЃР»РµРЅРёРµ РјРЅРѕР¶РёС‚РµР»СЏ РјР°СЃС€С‚Р°Р±РёСЂРѕРІР°РЅРёСЏ
         float scale = maxSize / maxDimension;
 
-        // Уменьшаем масштаб, чтобы размер был немного меньше максимального
-        scale *= 0.95f;  // Уменьшаем размер на 5% от максимального
+        // РЈРјРµРЅСЊС€Р°РµРј РјР°СЃС€С‚Р°Р±, С‡С‚РѕР±С‹ СЂР°Р·РјРµСЂ Р±С‹Р» РЅРµРјРЅРѕРіРѕ РјРµРЅСЊС€Рµ РјР°РєСЃРёРјР°Р»СЊРЅРѕРіРѕ
+        scale *= 0.95f;  // РЈРјРµРЅСЊС€Р°РµРј СЂР°Р·РјРµСЂ РЅР° 5% РѕС‚ РјР°РєСЃРёРјР°Р»СЊРЅРѕРіРѕ
 
-        // Вычисление новых размеров
+        // Р’С‹С‡РёСЃР»РµРЅРёРµ РЅРѕРІС‹С… СЂР°Р·РјРµСЂРѕРІ
         int newWidth = Mathf.RoundToInt(originalWidth * scale);
         int newHeight = Mathf.RoundToInt(originalHeight * scale);
 
         return (newWidth, newHeight);
     }
-    //public IEnumerator FetchContent()//Запрос category/{type}/list
+    //public IEnumerator FetchContent()//Р—Р°РїСЂРѕСЃ category/{type}/list
     //{
     //    foreach (string type in categoriesType)
     //    {
@@ -1157,7 +1161,7 @@ public class Archive : MonoBehaviour
 
     //                if (request.result == UnityWebRequest.Result.Success)
     //                {
-    //                    // Сохраняем полученные данные в кэше
+    //                    // РЎРѕС…СЂР°РЅСЏРµРј РїРѕР»СѓС‡РµРЅРЅС‹Рµ РґР°РЅРЅС‹Рµ РІ РєСЌС€Рµ
     //                    cache[url] = request.downloadHandler.text;
     //                    Debug.Log("Data fetched from API and cached: " + cache[url]);
 
@@ -1168,11 +1172,11 @@ public class Archive : MonoBehaviour
     //                        foreach (Content content in root.contents)
     //                        {
     //                            Texture2D texture;
-    //                            if (content.cover.url is null || content.cover.url == "") // ссылки нет
+    //                            if (content.cover.url is null || content.cover.url == "") // СЃСЃС‹Р»РєРё РЅРµС‚
     //                            {
 
     //                            }
-    //                            else if (!coverCache.ContainsKey(content.cover.id))   // ссылка есть
+    //                            else if (!coverCache.ContainsKey(content.cover.id))   // СЃСЃС‹Р»РєР° РµСЃС‚СЊ
     //                            {
     //                                UnityWebRequest request1 = UnityWebRequestTexture.GetTexture(content.cover.url);
     //                                requestManager.AddRequest(request1);
@@ -1180,7 +1184,7 @@ public class Archive : MonoBehaviour
     //                                //yield return request1.SendWebRequest();
     //                                if (request1.result == UnityWebRequest.Result.ConnectionError || request1.result == UnityWebRequest.Result.ProtocolError)
     //                                {
-    //                                    // Обработка ошибок HTTP, включая 404
+    //                                    // РћР±СЂР°Р±РѕС‚РєР° РѕС€РёР±РѕРє HTTP, РІРєР»СЋС‡Р°СЏ 404
     //                                    //Debug.Log(coverCache.Count);
     //                                    if (request1.responseCode == 404)
     //                                    {
@@ -1196,7 +1200,7 @@ public class Archive : MonoBehaviour
     //                                    texture = DownloadHandlerTexture.GetContent(request1);
     //                                    byte[] imageBytes = texture.EncodeToPNG();
 
-    //                                    // Сохранение массива байтов в файл
+    //                                    // РЎРѕС…СЂР°РЅРµРЅРёРµ РјР°СЃСЃРёРІР° Р±Р°Р№С‚РѕРІ РІ С„Р°Р№Р»
     //                                    string nameFile = content.cover.id + ".png";
     //                                    string savePath = Path.Combine(folderPath, nameFile);
     //                                    File.WriteAllBytes(savePath, imageBytes);
@@ -1209,7 +1213,7 @@ public class Archive : MonoBehaviour
     //                            }
 
     //                        }
-    //                        //yield break; // Прерываем выполнение, если данные уже есть в кэше
+    //                        //yield break; // РџСЂРµСЂС‹РІР°РµРј РІС‹РїРѕР»РЅРµРЅРёРµ, РµСЃР»Рё РґР°РЅРЅС‹Рµ СѓР¶Рµ РµСЃС‚СЊ РІ РєСЌС€Рµ
     //                    }
     //                }
     //                else
@@ -1250,7 +1254,7 @@ public class Archive : MonoBehaviour
     //                            else textures.Add(texture);
     //                            byte[] imageBytes = texture.EncodeToPNG();
 
-    //                            // Сохранение массива байтов в файл
+    //                            // РЎРѕС…СЂР°РЅРµРЅРёРµ РјР°СЃСЃРёРІР° Р±Р°Р№С‚РѕРІ РІ С„Р°Р№Р»
     //                            string nameFile = media.id + ".png";
     //                            string savePath = Path.Combine(folderPath, nameFile);
     //                            File.WriteAllBytes(savePath, imageBytes);
@@ -1259,12 +1263,12 @@ public class Archive : MonoBehaviour
     //                        }
     //                        else
     //                        {
-    //                            Debug.LogWarning("Такой id уже есть");
+    //                            Debug.LogWarning("РўР°РєРѕР№ id СѓР¶Рµ РµСЃС‚СЊ");
     //                            Texture2D texture = DownloadHandlerTexture.GetContent(request);
     //                            Texture2D texture1 = imageCache[media.id];
     //                            if (texture.width > texture1.width)
     //                            {
-    //                                Debug.LogWarning("новое изображение больше!");
+    //                                Debug.LogWarning("РЅРѕРІРѕРµ РёР·РѕР±СЂР°Р¶РµРЅРёРµ Р±РѕР»СЊС€Рµ!");
     //                                Debug.LogWarning(media.id);
     //                                Debug.LogWarning(imageCache[media.id].height);
     //                                Texture2D resizedTexture = ResizeTexture(texture, (int)(texture.width * 0.75), (int)(texture.height * 0.75));
@@ -1274,7 +1278,7 @@ public class Archive : MonoBehaviour
     //                                Debug.LogWarning(imageCache[media.id].height);
     //                                byte[] imageBytes = texture.EncodeToPNG();
 
-    //                                // Сохранение массива байтов в файл
+    //                                // РЎРѕС…СЂР°РЅРµРЅРёРµ РјР°СЃСЃРёРІР° Р±Р°Р№С‚РѕРІ РІ С„Р°Р№Р»
     //                                string nameFile = media.id + ".png";
     //                                string savePath = Path.Combine(folderPath, nameFile);
     //                                File.WriteAllBytes(savePath, imageBytes);
@@ -1294,4 +1298,44 @@ public class Archive : MonoBehaviour
     //    textures.Clear();
     //}
     #endregion
+
+
+    public void ClearFolder(string path)
+    {
+        // РџСЂРѕРІРµСЂСЏРµРј, СЃСѓС‰РµСЃС‚РІСѓРµС‚ Р»Рё РґРёСЂРµРєС‚РѕСЂРёСЏ
+        if (Directory.Exists(path))
+        {
+            // РџРѕР»СѓС‡Р°РµРј СЃРїРёСЃРѕРє РІСЃРµС… С„Р°Р№Р»РѕРІ РІ РґРёСЂРµРєС‚РѕСЂРёРё
+            string[] files = Directory.GetFiles(path);
+            foreach (string file in files)
+            {
+                try
+                {
+                    File.Delete(file); // РЈРґР°Р»СЏРµРј РєР°Р¶РґС‹Р№ С„Р°Р№Р»
+                }
+                catch (System.Exception ex)
+                {
+                    Debug.LogError("Error deleting file " + file + ": " + ex.Message);
+                }
+            }
+
+            // РџРѕР»СѓС‡Р°РµРј СЃРїРёСЃРѕРє РІСЃРµС… РїРѕРґРґРёСЂРµРєС‚РѕСЂРёР№
+            string[] subDirs = Directory.GetDirectories(path);
+            foreach (string dir in subDirs)
+            {
+                try
+                {
+                    Directory.Delete(dir, true); // РЈРґР°Р»СЏРµРј РєР°Р¶РґСѓСЋ РїРѕРґРґРёСЂРµРєС‚РѕСЂРёСЋ СЃ СЃРѕРґРµСЂР¶РёРјС‹Рј
+                }
+                catch (System.Exception ex)
+                {
+                    Debug.LogError("Error deleting directory " + dir + ": " + ex.Message);
+                }
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Directory does not exist: " + path);
+        }
+    }
 }
