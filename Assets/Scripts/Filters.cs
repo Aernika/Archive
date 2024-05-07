@@ -15,7 +15,7 @@ public class Filters : MonoBehaviour
     public Sprite blueBtn;
     public bool status; //false = black, true = blue
     public GameObject filterController;
-    public GameObject cardCreator;
+    public GameObject cardController;
     public GameObject controller;
     public void Start()
     {
@@ -31,7 +31,10 @@ public class Filters : MonoBehaviour
             this.GetComponent<Image>().pixelsPerUnitMultiplier = 10f; 
             this.GetComponentInChildren<TMP_Text>().color = Color.white;
             string text = gameObject.GetComponentInChildren<TMP_Text>().text;
-            filterController.GetComponent<ButtonFilters>().filtersTitles.Add(text);
+            cardController.GetComponent<Cards>().filtersList.Add(text);
+            cardController.GetComponent<Cards>().change = true;
+            //filterController.GetComponent<ButtonFilters>().filtersTitles.Add(text);
+            //Debug.Log("add filter " + text);
         }
         else
         {
@@ -40,17 +43,19 @@ public class Filters : MonoBehaviour
             this.GetComponentInChildren<TMP_Text>().color = Color.black;
             string text = gameObject.GetComponentInChildren<TMP_Text>().text;
             int id = -1;
-            for (int i = 0; i < filterController.GetComponent<ButtonFilters>().filtersTitles.Count; i++)
+            for (int i = 0; i < cardController.GetComponent<Cards>().filtersList.Count; i++)
             {
-                if (filterController.GetComponent<ButtonFilters>().filtersTitles[i] == text) 
+                if (cardController.GetComponent<Cards>().filtersList[i] == text) 
                 {
                     id = i;
                     break;
                 }
             }
-            filterController.GetComponent<ButtonFilters>().filtersTitles.RemoveAt(id);
+            cardController.GetComponent<Cards>().filtersList.RemoveAt(id);
+            cardController.GetComponent<Cards>().change = true;
+            //Debug.Log("del filter " + text+ " id ");
         }
-        cardCreator.GetComponent<Cards>().StartCreate(controller.GetComponent<MainMenu>().numCategory, filterController.GetComponent<ButtonFilters>().filtersTitles);
-        cardCreator.GetComponent<Cards>().StartCreate(controller.GetComponent<MainMenu>().numCategory, filterController.GetComponent<ButtonFilters>().filtersTitles);
+        //cardController.GetComponent<Cards>().StartCreate(filterController.GetComponent<ButtonFilters>().filtersTitles);
+        //cardController.GetComponent<Cards>().StartCreate(cardController.GetComponent<Cards>().filtersList);
     }
 }

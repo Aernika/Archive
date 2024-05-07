@@ -11,14 +11,25 @@ public class Audio : MonoBehaviour
     void Start()
     {
         volAudio = 3;
-        //audioMixer.SetFloat("volume", 0);
+        audioMixer.SetFloat("MasterVolume", 0);
     }
     public void BtnVolume()
     {
         volAudio += 1;
         if (volAudio == 4) volAudio = 1;
-        float volume = (float)(volAudio * 0.3333);
-        //audioMixer.SetFloat("volume", Mathf.Log10(volume) * 20);
+        switch (volAudio)
+        {
+            case 1:
+                audioMixer.SetFloat("MasterVolume", -20.0f);
+                break;
+            case 2:
+                audioMixer.SetFloat("MasterVolume", -10.0f);
+                break;
+            case 3:
+                audioMixer.SetFloat("MasterVolume", 0f);
+                break;
+        }
+
         foreach (GameObject pic in picVolume)
         {
             pic.SetActive(false);

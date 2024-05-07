@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Video;
 
 public class Idle : MonoBehaviour
 {
     public float idleTimeThreshold = 60f; 
     private float lastActivityTime;
+    public AudioSource audio;
+    public VideoPlayer video;
     void Start()
     {
         lastActivityTime = Time.time;
@@ -14,6 +17,14 @@ public class Idle : MonoBehaviour
     void Update()
     {
         if (Input.anyKeyDown)
+        {
+            lastActivityTime = Time.time;
+        }
+        if (audio.isPlaying)
+        {
+            lastActivityTime = Time.time;
+        }
+        if (video.isPlaying)
         {
             lastActivityTime = Time.time;
         }

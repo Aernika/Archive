@@ -9,60 +9,98 @@ public class AudioPlayer : MonoBehaviour
 {
     public Sprite btn1x;
     public Sprite btn2x;
+    public Sprite play;
+    public Sprite pause;
+    public Slider slider;
+    public GameObject speedBtn;
+
     public bool status; // false = 1x, true = 2x
     public TMP_Text timerText;
     private bool timerActive;
-    private float currentTime;
-    private int mult;
 
     public AudioSource audioSource;
     
-    private void Start()
-    {
-        status = false;
-        timerActive = false;
-        currentTime = 0f;
-        mult = 1;
-    }
+    //private void Start()
+    //{
+    //    ResetPlayer();
+    //}
 
+    void Update()
+    {
+        slider.value = (float)audioSource.time;
+        TimeCalc((float)audioSource.time);
+    }
+    void TimeCalc(float time)
+    {
+        int fulltime = (int)time;
+        int m = (fulltime / 60) % 60;
+        int s = fulltime % 60;
+        string text = "";
+        if (m < 10)
+        {
+            text += "0";
+            text += m.ToString();
+        }
+        else text += m.ToString();
+        text += ":";
+        if (s < 10)
+        {
+            text += "0";
+            text += s.ToString();
+        }
+        else text += s.ToString();
+
+        timerText.text = text;
+    }
+    void AdjustTime(float time)
+    {
+        if (time >= 0 && time <= audioSource.clip.length)
+        {
+            audioSource.time = time;
+        }
+        else
+        {
+            Debug.LogError("Attempted to seek to an invalid position: " + time);
+        }
+    }
     public void ClickPlay()
     {
         timerActive = !timerActive;
-        if (timerActive) audioSource.Play();
-        else audioSource.Pause();
+        if (timerActive)
+        {
+            audioSource.Play();
+            this.GetComponent<Image>().sprite = pause;
+        }
+        else
+        {
+            audioSource.Pause();
+            this.GetComponent<Image>().sprite = play;
+        }
     }
-    
+
     public void ClickSpeed()
     {
         status = !status;
         if (status)
         {
-            this.GetComponent<Image>().sprite = btn2x;
-            audioSource.pitch = 2f;
-            mult = 2;
+            speedBtn.GetComponent<Image>().sprite = btn2x;
+            audioSource.pitch = 1.5f;
         }
         else
         {
-            this.GetComponent<Image>().sprite = btn1x;
+            speedBtn.GetComponent<Image>().sprite = btn1x;
             audioSource.pitch = 1f;
-            mult = 1;
-        }
-    }
-    
-    void Update()
-    {
-        if (timerActive)
-        {
-            currentTime += Time.deltaTime*mult;
-            TimeSpan timeSpan = TimeSpan.FromSeconds(currentTime);
-            timerText.text = string.Format("{0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
         }
     }
 
-    public void ResetTimer()
+    public void ResetPlayer()
     {
+        slider.maxValue = audioSource.clip.length;
+        slider.onValueChanged.AddListener(AdjustTime);
+        status = false;
         timerActive = false;
-        currentTime = 0f;
-        timerText.text = "00:00:00";
+        timerText.text = "00:00";
+        
+        //audioSource.Play();
     }
 }
